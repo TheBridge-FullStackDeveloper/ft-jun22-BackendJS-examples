@@ -1,0 +1,14 @@
+{
+  "name": "mi_super_server",
+  "version": "1.0.0",
+  "description": "Primera toma de contacto con NodeJS y Express",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alejandro Reyes",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
