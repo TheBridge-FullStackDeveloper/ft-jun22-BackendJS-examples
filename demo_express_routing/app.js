@@ -22,7 +22,7 @@ app.set('views','./views');
 //Permite leer el body recibido en una petición
 app.use(express.json());
 // Router de productos
-app.use("/",productsRoutes);
+app.use("/products",productsRoutes);
 
 // HOME
 // http://127.0.0.1:3000
@@ -63,6 +63,11 @@ app.get('/perritos', (req, res) => {
     res.render("my_view",{section:"Perritos",msj:msj2});
 })
 
+// Middleware error
+// Respuesta por defecto para rutas no existentes
+app.use(function (req,res,next){
+	res.status(404).send('Error! 404 not found :) ');
+});
 
 
 app.listen(port, () => {
