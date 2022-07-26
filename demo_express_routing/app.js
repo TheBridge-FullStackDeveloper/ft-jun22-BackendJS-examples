@@ -7,10 +7,15 @@ const whale = require('cowsay2/cows/whale');
 
 // Rutas de productos
 const productsRoutes = require('./routes/productsRoutes');
+const productsApiRoutes = require('./routes/productsApiRoutes');
 
 // Tu propio módulo
 //const calc = require('./utils/calculator.js');
 const calc = require('./utils/calculator');
+
+// Middlewares
+const manage404 = require('./middlewares/error404');
+const checkApiKey = require('./middlewares/auth_API_KEY'); 
 
 const app = express()
 const port = 3000
@@ -21,8 +26,30 @@ app.set('views','./views');
 
 //Permite leer el body recibido en una petición
 app.use(express.json());
+
+//Middleware de acceso para TODAS las rutas
+//app.use(checkApiKey); 
+
 // Router de productos
+// Middleware de acceso para las rutas de products
+//app.use("/products",checkApiKey,productsRoutes);
+
+// WEB
 app.use("/products",productsRoutes);
+// API
+app.use("/api/products",productsApiRoutes);
+
+WEB
+http://localhost:3000/products GET
+http://localhost:3000/products/4 GET
+
+API
+http://localhost:3000/api/products GET
+http://localhost:3000/api/products/3 GET
+http://localhost:3000/api/products POST
+http://localhost:3000/api/products DELETE
+
+
 
 // HOME
 // http://127.0.0.1:3000
@@ -65,9 +92,7 @@ app.get('/perritos', (req, res) => {
 
 // Middleware error
 // Respuesta por defecto para rutas no existentes
-app.use(function (req,res,next){
-	res.status(404).send('Error! 404 not found :) ');
-});
+app.use(manage404);
 
 
 app.listen(port, () => {
