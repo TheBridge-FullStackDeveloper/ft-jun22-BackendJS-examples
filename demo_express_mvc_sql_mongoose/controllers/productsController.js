@@ -1,27 +1,31 @@
 // Controlador - Lógica de negocio de la app
-const Product = require('../models/products'); // Importo el modelo de BBDD Products
+const fetch = require('node-fetch');
 
 const getProducts = async (req, res) => {
-    if (req.params.id) { //FIND BY ID
+    if (req.params.id) {
         try {
-            let product =  await Product.find({id:req.params.id},'-_id -__v');
-            res.status(200).json(product); 
+            let response = await fetch(`https://fakestoreapi.com/products/${req.params.id}`); //{}
+            let products = await response.json(); //{}
+            res.status(200).render('products', { "products": [products] }); // Pinta datos en el pug
         }
         catch (error) {
             console.log(`ERROR: ${error.stack}`);
-            res.status(404).json({"message":"producto no encontrado"});
+            res.status(404).render('products', { "products": [] }); // Pinta datos en el pug
         }
-    } else { // FIND ALL
+    } else {
         try {
-            let products = await Product.find({},'-_id -__v').sort('-id'); //[]
-            res.status(200).json({products});
+            let response = await fetch(`https://fakestoreapi.com/products`); // []
+            let products = await response.json(); // []
+            res.status(200).render('products', {products}); // Pinta datos en el pug
         }
         catch (error) {
             console.log(`ERROR: ${error.stack}`);
-            res.status(404).json({"message":"productos no encontrados"});
+            let products = [];
+            res.status(404).render('products', {products});
         }
     }
 }
+/*
 const createProduct = async (req, res) => {
     console.log("Esto es el consol.log de lo que introducimos por postman",req.body); // Objeto recibido de producto nuevo
     const newProduct = req.body; // {} nuevo producto a guardar
@@ -29,25 +33,34 @@ const createProduct = async (req, res) => {
     //para guardar 
     // en una BBDD SQL o MongoDB
     try{
-        let product = new Product(req.body); // Crear el objeto Product con los datos del producto
-        let answer = await product.save(); // Guardar objeto en MongoDB
+        let response = await fetch('https://fakestoreapi.com/products', {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newProduct)
+        })
+        let answer = await response.json(); // objeto de vuelta de la petición
         console.log("Este es el console.log de lo que devuelve la api",answer);
-        res.status(201).json({"message":`Producto ${answer.title} guardado en el sistema con ID: ${answer.id}`});
+        res.status(201).send(`Producto ${answer.title} guardado en el sistema con ID: ${answer.id}`);
     
     }catch(error){
         console.log(`ERROR: ${error.stack}`);
-        res.status(400).json({"message":`Error guardando producto ${answer.title} `});
+        res.status(400).send(`Error guardando producto ${answer.title} `);
     }
 }
+
 const deleteProduct = async (req,res)=>{
     const msj ="Has enviado un DELETE para borrar product";
     console.log(msj);
-    res.json({"message":msj});
+    res.send(msj);
 }
+*/
 module.exports = {
     getProducts,
-    createProduct,
-    deleteProduct
+    //createProduct,
+    //deleteProduct
     //editProduct,
     
 }
