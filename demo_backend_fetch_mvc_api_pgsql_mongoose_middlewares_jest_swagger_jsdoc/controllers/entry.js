@@ -1,5 +1,20 @@
+/**
+ * @author AlejandroReyes <alejandroreyespage.com> 
+ * @exports routes 
+ * @namespace routes 
+ */
+
 const db = require('../models/entry.js');
 
+  /**
+  * @memberof routes 
+  * @method getEntries 
+  * @async 
+  * @param {Object} req objeto de petición HTTP
+  * @param {Object} res objeto de respuesta HTTP
+  * @return {json} objeto con todas las entries encontradas
+  * @throws {error} 
+  */
 const getEntries = async (req,res) => {
     // /entries?email=alejandru@thebridgeschool.es
     if (req.query.email) {

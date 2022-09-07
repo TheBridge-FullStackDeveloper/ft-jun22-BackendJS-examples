@@ -1,3 +1,10 @@
+/**
+ * @author Alejandro Reyes <alejandroreyes.com> 
+ * @exports entries
+ * @namespace SQLQueries 
+ */
+
+
 const { Pool } = require('pg');
 const pool = new Pool({
     host: 'localhost',
@@ -6,7 +13,15 @@ const pool = new Pool({
     password: 1234
   })
 
-// GET
+/**
+  * Descripción de la función: Esta función busca todas las entries de cierto autor por email
+  * @memberof SQLQueries 
+  * @method getEntriesByEmail 
+  * @async 
+  * @param {String} email email del autor
+  * @return {Object} Devuelve las entries encontradas en un array []
+  * @throws {Error} Error de consulta a la BBDD
+  */
 const getEntriesByEmail = async (email) => {
     let client,result;
     try{
@@ -28,7 +43,14 @@ const getEntriesByEmail = async (email) => {
     return result
 }
 
-// GET
+/**
+ * Descripción: Esta función devuelve todas las entries del sistema
+ * @memberof SQLQueries 
+ * @method getAllEntries 
+ * @async 
+ * @return {Object} Devuelve todas las entries en un array
+ * @throws {Error} Error de consulta a la BBDD
+ */
 const getAllEntries = async () => {
     let client,result;
     try{

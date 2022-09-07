@@ -42,7 +42,7 @@ module.exports = Product;
 /*
 // Insertar un producto
 const p = new Product({
-    id: 2,
+    id: 99,
     title: "Tortilla",
     price: 1.80,
     description: "Tortilla jugosa del teatro",
